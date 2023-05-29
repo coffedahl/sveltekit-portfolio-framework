@@ -1,3 +1,8 @@
+<script lang="ts">
+	import type { LayoutServerData } from './$types';
+	export let data: LayoutServerData;
+</script>
+
 <header class="flex items-center justify-between">
 	<a href="/" class="flex items-center">
 		<img src="/Logo.png" alt="" />
@@ -9,6 +14,9 @@
 			<li><a href="/web">Webdesign</a></li>
 			<li><a href="/photography">Photograpy</a></li>
 			<li><a href="/contact">Contact</a></li>
+			{#if data.isAdmin}
+				<li><a href="/admin">Admin</a></li>
+			{/if}
 		</ul>
 	</nav>
 </header>
