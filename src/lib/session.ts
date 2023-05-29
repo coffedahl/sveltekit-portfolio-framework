@@ -1,27 +1,33 @@
-export interface Session {
+export class Session {
 	sessionId: string;
 	expires: Date;
-	username?: string
-}
+	username?: string;
 
-export function parseSession(indata: any): Session {
-	if (typeof indata.sessionId === 'string') {
-		try {
-			const expireDate = new Date(indata.expire);
-			return { sessionId: indata.sessionId, expires: expireDate };
-		} catch {
-			throw console.error('Wrong type when trying to parse Session: ' + indata);
-		}
-	} else {
-		throw console.error('Wrong type when trying to parse Session: ' + indata);
+	constructor(sessionId: string, expires: Date, username?: string) {
+		this.sessionId = sessionId;
+		this.expires = expires;
+		this.username = username;
 	}
-}
 
-export function validateSession(session: Session): boolean {
-	const timeNow = new Date();
-	if (timeNow < session.expires) {
-		return false;
-	} else {
-		return true;
+	static createFromObject(object: any): Session {
+		if (typeof object.sessionId === 'string') {
+			try {
+				const date = new Date(object.expire);
+				return new Session(object.sessionId, date, object.username);
+			} catch {
+				throw console.error('Wrong type when trying to parse Session: ' + object);
+			}
+		} else {
+			throw console.error('Wrong type when trying to parse Session: ' + object);
+		}
+	}
+
+	validateSession(): boolean {
+		const timeNow = new Date();
+		if (timeNow < this.expires) {
+			return false;
+		} else {
+			return true;
+		}
 	}
 }
