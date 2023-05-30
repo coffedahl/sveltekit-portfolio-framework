@@ -2,68 +2,75 @@ import { Session } from './session';
 import { User } from './user';
 import { randomBytes } from 'crypto';
 
-// Create mock database
+/**
+ * Mock database implementation.
+ */
 export class Database {
-	// Variables
-	sessions: Array<Session>;
-	users: Array<User>;
-	// Constructor
+	private sessions: Session[];
+	private users: User[];
+
+	/**
+	 * Constructor.
+	 */
 	constructor() {
 		this.sessions = [];
 		this.users = [new User('Christoffer', 'Dahl', 'coffedahl', 'test')];
 	}
 
-	// Sessionfunction
-	createSession(username: string): Session {
-		// Create variables
+	/**
+	 * Create a new session for a given username.
+	 * @param {string} username - The username for the session.
+	 * @returns {Session} The created session object.
+	 */
+	public createSession(username: string): Session {
 		const sessionId = randomBytes(16).toString('hex');
 		const expires = new Date();
 		expires.setHours(expires.getHours() + 2);
-		// Create object
+
 		const sessionObject = new Session(sessionId, expires, username);
-		// Add to database
+
 		this.sessions.push(sessionObject);
-		// Delete username and return object
+
 		return sessionObject;
 	}
 
 	/**
-	 * Function for getting a session from a key
-	 * @param key The key that is beeing found
-	 * @returns Session object
+	 * Get a session object by its key.
+	 * @param {string} key - The key of the session to retrieve.
+	 * @returns {Session} The session object if found.
+	 * @throws {Error} If the session is not found.
 	 */
-	getSessionByKey(key: string): Session {
-		// Find the session with the key
-		const session = this.sessions.find((e) => e.sessionId == key);
-		// If session is fund
+	public getSessionByKey(key: string): Session {
+		const session = this.sessions.find((e) => e.sessionId === key);
+
 		if (session) {
 			return session;
 		} else {
-			throw console.error('session not found');
+			throw new Error('Session not found');
 		}
 	}
 
 	/**
-	 * Function for getting all sessions in database
-	 * @returns Array with sessions
+	 * Get all sessions in the database.
+	 * @returns {Session[]} An array of session objects.
 	 */
-	getAllSessions(): Array<Session> {
+	public getAllSessions(): Session[] {
 		return this.sessions;
 	}
 
 	/**
-	 * Function for getting users by username
-	 * @param username The username for the user
-	 * @returns User object
+	 * Get a user object by username.
+	 * @param {string} username - The username of the user to retrieve.
+	 * @returns {User} The user object if found.
+	 * @throws {Error} If the user is not found.
 	 */
-	getUserByUsername(username: string): User {
-		// Find user with username
-		const user = this.users.find((e) => e.username == username);
-		// If user is found
+	public getUserByUsername(username: string): User {
+		const user = this.users.find((e) => e.username === username);
+
 		if (user) {
 			return user;
 		} else {
-			throw console.log('No user with username: ' + username + ' was found');
+			throw new Error('User not found');
 		}
 	}
 }
