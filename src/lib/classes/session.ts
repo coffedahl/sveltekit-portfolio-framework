@@ -1,3 +1,4 @@
+import { randomBytes } from 'crypto';
 /**
  * Represents a session.
  */
@@ -21,6 +22,21 @@ export class Session {
 		this._username = username;
 	}
 
+	/**
+	 * Creates a new session for the specified username.
+	 *
+	 * @param {string} username - The username associated with the session.
+	 * @returns {Session} - A new session object containing the session ID, expiration date, and username.
+	 */
+	static createSession(username: string) {
+		// Create new sessionId
+		const sessionId = randomBytes(16).toString('hex');
+		// Set expires date 2 hours in the future
+		const expires = new Date();
+		expires.setHours(expires.getHours() + 2);
+		// Return a new session object
+		return new Session(sessionId, expires, username);
+	}
 	/**
 	 * Creates a new Session instance from an object.
 	 * @param object - The object to create the session from.
