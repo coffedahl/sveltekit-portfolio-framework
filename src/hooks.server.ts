@@ -1,10 +1,10 @@
 // Imports
 import { redirect, type Handle } from '@sveltejs/kit';
 import { Database } from './lib/db';
-import { Session } from '$lib/session';
+import { Session } from '$lib/classes/session';
 // Create mock databse
-const db = new Database();
-
+const db = new Database('http://localhost:8000/rpc');
+db.initDb('root', 'root', 'test', 'test');
 // Code running every server request
 export const handle = (async ({ event, resolve }) => {
 	// Link mock db
