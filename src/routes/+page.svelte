@@ -1,5 +1,5 @@
 <script>
-	import ImageCarusel from '../components/ImageCarusel.svelte';
+	import ImageCarousel from '../components/ImageCarousel.svelte';
 </script>
 
 <div class="main flex flex-column">
@@ -28,7 +28,7 @@
 	<section class="web">
 		<div class="flex justify-even items-center">
 			<div class="carousel">
-				<ImageCarusel photos={['/images/madittbasta.png', '/images/open-sp.png']} />
+				<ImageCarousel photos={['/images/madittbasta.png', '/images/open-sp.png']} />
 			</div>
 			<div class="flex flex-column">
 				<h1>Photograpy</h1>
