@@ -11,6 +11,19 @@ export class User {
 		this._password = password;
 	}
 
+	static createFromObject(object: any) {
+		if (
+			typeof object.firstName === 'string' &&
+			typeof object.lastName === 'string' &&
+			typeof object.username === 'string' &&
+			typeof object.password === 'string'
+		) {
+			return new User(object.firstName, object.lastName, object.username, object.password);
+		} else {
+			throw new Error('Unable to create user from object: ' + JSON.stringify(object));
+		}
+	}
+
 	get firstName(): string {
 		return this._firstName;
 	}
