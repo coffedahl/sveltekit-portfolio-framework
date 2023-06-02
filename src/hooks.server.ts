@@ -1,7 +1,7 @@
 // Imports
 import { redirect, type Handle } from '@sveltejs/kit';
 import { Database } from './lib/db';
-import { Session } from '$lib/classes/session';
+import type { SessionData } from '$lib/types/types';
 // Create mock databse
 const db = new Database('http://localhost:8000/rpc');
 db.initDb('root', 'root', 'test', 'test');
@@ -12,17 +12,18 @@ export const handle = (async ({ event, resolve }) => {
 	// If user tries to acces admin path
 	if (event.url.pathname.startsWith('/admin')) {
 		// Get session
-		const session = event.cookies.get('session');
+		const session: SessionData = JSON.parse(String(event.cookies.get('session')));
 		// Check if session is not there
 		if (!session) {
 			// Redirect to login
 			throw redirect(303, '/login');
 		} else {
-			// Create new session object
-			const sess = Session.createFromObject(JSON.parse(String(session)));
-			// Check if session is validated
-			if (!sess.validateSession()) {
-				// Delete cookie and redirect
+			// Get session from database
+			const dbSession = await event.locals.db.getSessionBySessionId(session.sessionId);
+			// Check if dbsession is expired
+			if (dbSession.expires < new Date()) {
+				// Delete session and redirect to login
+				event.locals.db.deleteSesssionById(session.sessionId);
 				event.cookies.delete('session');
 				throw redirect(303, '/login');
 			}
