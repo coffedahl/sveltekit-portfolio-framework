@@ -44,16 +44,22 @@ export class Session {
 	 * @throws Error if the object is of the wrong type.
 	 */
 	static createFromObject(object: any): Session {
-		const sessionId = object.sessionId || object._sessionId;
+		const sessionId = object.id || object._sessionId;
 		const expires = object.expires || object._expires;
 		const username = object.username || object._username;
 
-		if (typeof sessionId === 'string' && typeof expires === 'string') {
+		if (
+			typeof sessionId === 'string' &&
+			typeof expires === 'string' &&
+			typeof username === 'string'
+		) {
 			try {
 				const date = new Date(expires);
 				return new Session(sessionId, date, username);
-			} catch {
-				throw new Error('Wrong type when trying to parse Session: ' + JSON.stringify(object));
+			} catch (error) {
+				throw new Error(
+					'Object Expires is not Datetime: ' + JSON.stringify(object) + ' Error: ' + error
+				);
 			}
 		} else {
 			throw new Error('Wrong type when trying to parse Session: ' + JSON.stringify(object));

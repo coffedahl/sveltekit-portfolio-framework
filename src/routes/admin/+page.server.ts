@@ -4,7 +4,9 @@ export const actions: Actions = {
 	default: async ({ cookies, locals }) => {
 		const sessionData = JSON.parse(String(cookies.get('session')));
 		if (sessionData) {
-			locals.db.deleteSesssionById(sessionData.sessionId);
+			if (!(await locals.db.deleteSesssionById(sessionData.sessionId))) {
+				throw Error('Unable to delete session');
+			}
 		}
 		cookies.delete('session');
 		throw redirect(303, '/');

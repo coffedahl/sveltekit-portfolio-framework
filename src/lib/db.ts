@@ -37,7 +37,7 @@ export class Database {
 	 * SESSIONS
 	 */
 	async getSessionBySessionId(sessionId: string): Promise<Session> {
-		const response = this._db.query('SELECT * FROM $sessionId;', {
+		const response = await this._db.query('SELECT * FROM $sessionId;', {
 			sessionId: 'session:' + sessionId
 		});
 		if (response[0].result[0]) {
@@ -48,11 +48,14 @@ export class Database {
 	}
 	async createSession(username: string): Promise<Session> {
 		const session = Session.createSession(username);
-		const response = this._db.query('CREATE $sessionId SET username=$username, expires=$expires;', {
-			sessionId: session.sessionId,
-			username: session.username,
-			expires: session.expires
-		});
+		const response = await this._db.query(
+			'CREATE $sessionId SET username=$username, expires=$expires;',
+			{
+				sessionId: 'session:' + session.sessionId,
+				username: session.username,
+				expires: session.expires
+			}
+		);
 		if (response[0].result[0]) {
 			return session;
 		} else {
@@ -60,8 +63,15 @@ export class Database {
 		}
 	}
 
-	async deleteSesssionById(sessionId: string) {
-		const response = await this._db.delete(sessionId);
+	async deleteSesssionById(sessionId: string): Promise<boolean> {
+		const response = await this._db.query('DELETE $sessionId;', {
+			sessionId: 'session:' + sessionId
+		});
+		if (response[0].status == 'OK') {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	/**

@@ -12,18 +12,19 @@ export const handle = (async ({ event, resolve }) => {
 	// If user tries to acces admin path
 	if (event.url.pathname.startsWith('/admin')) {
 		// Get session
-		const session: SessionData = JSON.parse(String(event.cookies.get('session')));
+		const sessionCookie = event.cookies.get('session');
 		// Check if session is not there
-		if (!session) {
+		if (!sessionCookie) {
 			// Redirect to login
 			throw redirect(303, '/login');
 		} else {
+			const sessionData: SessionData = JSON.parse(sessionCookie);
 			// Get session from database
-			const dbSession = await event.locals.db.getSessionBySessionId(session.sessionId);
+			const dbSession = await event.locals.db.getSessionBySessionId(sessionData.sessionId);
 			// Check if dbsession is expired
 			if (dbSession.expires < new Date()) {
 				// Delete session and redirect to login
-				event.locals.db.deleteSesssionById(session.sessionId);
+				event.locals.db.deleteSesssionById(sessionData.sessionId);
 				event.cookies.delete('session');
 				throw redirect(303, '/login');
 			}
