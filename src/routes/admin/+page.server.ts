@@ -4,7 +4,7 @@ export const actions: Actions = {
 	default: async ({ cookies, locals }) => {
 		const sessionData = JSON.parse(String(cookies.get('session')));
 		if (sessionData) {
-			if (!(await locals.db.deleteSesssionById(sessionData.sessionId))) {
+			if (!(await locals.db.deleteSessionById(sessionData.sessionId))) {
 				throw Error('Unable to delete session');
 			}
 		}
