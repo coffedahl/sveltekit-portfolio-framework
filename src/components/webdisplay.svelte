@@ -1,10 +1,11 @@
 <script lang="ts">
-	import type { WebsiteData } from '$lib/types';
-	export let webdata: WebsiteData;
+	import type { Website } from '$lib/classes/websites';
+
+	export let webdata: Website;
 </script>
 
 <div class="flex flex-column items-center parent">
-	<a href={'/web' + webdata.pageurl}>
+	<a href={'/web' + webdata.pageUrl}>
 		<div class="background" style="background-image: url({webdata.imgUrl});" />
 	</a>
 	<div class="text-overlay flex total-center">
