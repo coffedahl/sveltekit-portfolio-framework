@@ -50,15 +50,17 @@
 		min-height: 80vh;
 	}
 	footer {
-		height: 10vh;
+		height: 13vh;
 		border-top: 2px solid rgb(234, 234, 234);
-		margin-top: 5vh;
+		margin-top: 10vh;
+		background-color: rgb(214, 214, 214);
 		i:hover {
 			color: var(--secondary-color);
 		}
 		.social-links {
 			width: 20vw;
 			padding: 1vh 2vw 1vh 2vw;
+			background-color: rgba(255, 255, 255, 0);
 			border-bottom: 1px solid rgb(194, 194, 194);
 		}
 	}
