@@ -1,6 +1,7 @@
 import { Surreal } from 'surrealdb.js';
 import { Session } from './classes/session';
 import { User } from './classes/user';
+import { Website } from './classes/websites';
 
 /**
  * Represents a connection to a database.
@@ -98,6 +99,16 @@ export class Database {
 			return true;
 		} else {
 			return false;
+		}
+	}
+
+	async getWebsiteList(): Promise<Array<Website>> {
+		const response = await this._db.query('SELECT * FROM website;')
+		if (response[0].result.length != 0) {
+			const webList: Array<Website> = [];
+			response[0].result.forEach(website => {
+				webList.push(Website.createFromObject())
+			});
 		}
 	}
 

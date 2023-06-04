@@ -11,6 +11,19 @@ export class Website {
 		this._imgUrl = imgUrl;
 	}
 
+	static createFromObject(object: any) {
+		if (
+			typeof object.publicUrl === 'string' &&
+			typeof object.pageUrl === 'string' &&
+			typeof object.name === 'string' &&
+			typeof object.imgUrl === 'string'
+		) {
+			return new Website(object.publicUrl, object.pageUrl, object.name, object.imgUrl);
+		} else {
+			throw new Error('Unable to create website from object: ' + JSON.stringify(object));
+		}  
+	}
+
 	get publicUrl(): string {
 		return this._publicUrl;
 	}
