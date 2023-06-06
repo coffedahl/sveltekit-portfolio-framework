@@ -1,7 +1,7 @@
 <script lang="ts">
-	import type { Website } from '$lib/classes/websites';
+	import type { WebData, Website } from '$lib/classes/websites';
 
-	export let webdata: Website;
+	export let webdata: WebData;
 </script>
 
 <div class="flex flex-column items-center parent">
