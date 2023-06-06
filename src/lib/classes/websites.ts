@@ -1,14 +1,34 @@
+export interface WebData {
+	id: string;
+	publicUrl: string;
+	pageUrl: string;
+	name: string;
+	imgUrl: string;
+}
+
 export class Website {
+	private _id: string;
 	private _publicUrl: string;
 	private _pageUrl: string;
 	private _name: string;
 	private _imgUrl: string;
 
-	constructor(publicUrl: string, pageUrl: string, name: string, imgUrl: string) {
+	constructor(publicUrl: string, pageUrl: string, name: string, imgUrl: string, id: string) {
+		this._id = id;
 		this._publicUrl = publicUrl;
 		this._pageUrl = pageUrl;
 		this._name = name;
 		this._imgUrl = imgUrl;
+	}
+
+	getDataAsObject(): WebData {
+		return {
+			id: this._id,
+			publicUrl: this._publicUrl,
+			pageUrl: this.pageUrl,
+			name: this._name,
+			imgUrl: this._imgUrl
+		};
 	}
 
 	static createFromObject(object: any) {
@@ -16,12 +36,13 @@ export class Website {
 			typeof object.publicUrl === 'string' &&
 			typeof object.pageUrl === 'string' &&
 			typeof object.name === 'string' &&
-			typeof object.imgUrl === 'string'
+			typeof object.imgUrl === 'string' &&
+			typeof object.id === 'string'
 		) {
-			return new Website(object.publicUrl, object.pageUrl, object.name, object.imgUrl);
+			return new Website(object.publicUrl, object.pageUrl, object.name, object.imgUrl, object.id);
 		} else {
 			throw new Error('Unable to create website from object: ' + JSON.stringify(object));
-		}  
+		}
 	}
 
 	get publicUrl(): string {
