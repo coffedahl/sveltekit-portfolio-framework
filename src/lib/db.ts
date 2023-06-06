@@ -103,12 +103,36 @@ export class Database {
 	}
 
 	async getWebsiteList(): Promise<Array<Website>> {
-		const response = await this._db.query('SELECT * FROM website;')
+		const response = await this._db.query('SELECT * FROM website;');
 		if (response[0].result.length != 0) {
 			const webList: Array<Website> = [];
-			response[0].result.forEach(website => {
-				webList.push(Website.createFromObject())
+			response[0].result.forEach((website: any) => {
+				webList.push(Website.createFromObject(website));
 			});
+			return webList;
+		} else {
+			throw new Error('No websites was found!');
+		}
+	}
+
+	async getFeaturedWebsite(): Promise<Website> {
+		const response = await this._db.query('SELECT website FROM featured:website FETCH website;');
+		console.log(response[0].result);
+		if (response[0].result.length != 0) {
+			return Website.createFromObject(response[0].result[0].website);
+		} else {
+			throw new Error('No featured project was found');
+		}
+	}
+
+	async updateFeaturedWebsite(websiteId: string): Promise<boolean> {
+		const response = await this._db.query('UPDATE featured:website SET website = $website;', {
+			website: websiteId
+		});
+		if (response[0].status == 'OK') {
+			return true;
+		} else {
+			return false;
 		}
 	}
 
