@@ -1,5 +1,8 @@
-<script>
+<script lang="ts">
+	import type { PageServerData } from './$types';
+	export let data: PageServerData;
 	import ImageCarousel from '../components/ImageCarousel.svelte';
+	import Webdisplay from '../components/webdisplay.svelte';
 </script>
 
 <div class="main flex flex-column">
@@ -48,7 +51,9 @@
 			</div>
 			<div class="flex flex-column items-center">
 				<h3>Featured project:</h3>
-				<img src="/images/open-sp.png" alt="" style="width: 30vw;" />
+				<div class="webwrapper">
+					<Webdisplay webdata={data.featuredWebsite} />
+				</div>
 			</div>
 		</div>
 	</section>
@@ -92,8 +97,13 @@
 		margin-top: 3vh;
 		margin-top: 3vh;
 		height: 35vh;
-		img {
+		img,
+		.webwrapper {
 			box-shadow: 15px 15px 20px rgba(0, 0, 0, 0.1);
+		}
+		.webwrapper {
+			width: 30vw;
+			height: 16.875vw;
 		}
 	}
 
