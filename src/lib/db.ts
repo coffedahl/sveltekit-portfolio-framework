@@ -125,16 +125,20 @@ export class Database {
 	}
 
 	async updateWebsite(website: Website) {
-		const response = await this._db.query('UPDATE $id')
+		const response = await this._db.query('UPDATE $id');
 	}
 
-	async deleteWebsite(id: string) {
-		const response = await this._db.query('DELETE $id;');
+	async deleteWebsite(id: string): Promise<boolean> {
+		const response = await this._db.query('DELETE $id;', { id });
+		if (response[0].result == 'ok') {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	async getFeaturedWebsite(): Promise<Website> {
 		const response = await this._db.query('SELECT website FROM featured:website FETCH website;');
-		console.log(response[0].result);
 		if (response[0].result.length != 0) {
 			return Website.createFromObject(response[0].result[0].website);
 		} else {
