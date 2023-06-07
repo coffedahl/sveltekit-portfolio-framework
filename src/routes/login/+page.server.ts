@@ -16,7 +16,7 @@ export const actions: Actions = {
 			cookies.set('session', JSON.stringify({ sessionId: session.sessionId }));
 			throw redirect(303, '/admin');
 		} else {
-			throw Error('No valid login');
+			return { fail: true }
 		}
 	}
 };
