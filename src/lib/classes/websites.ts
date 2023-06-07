@@ -76,4 +76,11 @@ export class Website {
 	set imgUrl(url: string) {
 		this._imgUrl = url;
 	}
+
+	get id(): string {
+		return this._id;
+	}
+	set id(id: string) {
+		this._id = id;
+	}
 }
