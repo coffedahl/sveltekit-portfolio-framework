@@ -11,7 +11,7 @@
 			<li class="flex">
 				<p>{website.name}</p>
 				<a href={'/admin/website/' + website.pageUrl.split('/')[1]}><button>Edit</button></a>
-				<form action="?/delete">
+				<form action="?/remove" method="post">
 					<input type="text" value={website.id} hidden={true} name="id" />
 					<button>Delete</button>
 				</form>
