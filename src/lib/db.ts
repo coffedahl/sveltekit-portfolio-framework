@@ -115,6 +115,23 @@ export class Database {
 		}
 	}
 
+	async getWebsite(id: string): Promise<Website> {
+		const response = await this._db.query('SELECT * FROM $id;', { id });
+		if (response[0].result[0]) {
+			return Website.createFromObject(response[0].result[0]);
+		} else {
+			throw new Error('No website with the id: ' + id + ' was found!');
+		}
+	}
+
+	async updateWebsite(website: Website) {
+		const response = await this._db.query('UPDATE $id')
+	}
+
+	async deleteWebsite(id: string) {
+		const response = await this._db.query('DELETE $id;');
+	}
+
 	async getFeaturedWebsite(): Promise<Website> {
 		const response = await this._db.query('SELECT website FROM featured:website FETCH website;');
 		console.log(response[0].result);

@@ -1,22 +1,35 @@
-import type { WebData } from '$lib/classes/websites';
 import type { PageServerLoad, Actions } from './$types';
+
 export const load: PageServerLoad = async ({ locals }) => {
-	const weblist = await locals.db.getWebsiteList();
+	// Get the featured website
 	const featured = await locals.db.getFeaturedWebsite();
-	const webdata: Array<WebData> = [];
-	weblist.forEach((website) => {
-		webdata.push(website.getDataAsObject());
-	});
-	return { webdata, featured: featured.getDataAsObject() };
+	// Return data
+	return { webdata: locals.webData, featured: featured.getDataAsObject() };
 };
 
 export const actions: Actions = {
-	default: async ({ request, locals }) => {
-		console.log('Button press');
-		const formdata = await request.formData();
-		const featuredWebsite = formdata.get('feature');
+	/**
+	 * Function that handles the update of what project is featrured
+	 */
+	feature: async ({ request, locals }) => {
+		// Get data from form
+		const formData = await request.formData();
+		const featuredWebsite = formData.get('feature');
+		// Update the featured website
 		if (featuredWebsite) {
 			await locals.db.updateFeaturedWebsite(String(featuredWebsite));
+		}
+	},
+	/**
+	 * Function that handles deletion of a project
+	 */
+	delete: async ({ request, locals }) => {
+		// Get formdata
+		const formData = await request.formData();
+		const id = formData.get('id');
+		// Delete project
+		if (id) {
+			await locals.db.deleteWebsite(String(id));
 		}
 	}
 };

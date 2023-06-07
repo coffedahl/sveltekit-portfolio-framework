@@ -10,11 +10,15 @@
 		{#each data.webdata as website}
 			<li class="flex">
 				<p>{website.name}</p>
-				<button>Edit</button><button>Delete</button>
+				<a href={'/admin/website/' + website.pageUrl.split('/')[1]}><button>Edit</button></a>
+				<form action="?/delete">
+					<input type="text" value={website.id} hidden={true} name="id" />
+					<button>Delete</button>
+				</form>
 			</li>
 		{/each}
 	</ul>
-	<form method="post">
+	<form method="post" action="?/feature">
 		<h2>Featured project</h2>
 		<select name="feature">
 			{#each data.webdata as website}
