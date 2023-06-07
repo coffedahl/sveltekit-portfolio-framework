@@ -125,7 +125,23 @@ export class Database {
 	}
 
 	async updateWebsite(website: Website) {
-		const response = await this._db.query('UPDATE $id');
+		console.log(JSON.stringify(website.getDataAsObject()));
+		const response = await this._db.query(
+			'UPDATE $id SET name = $name, pageUrl = $pageUrl, imgUrl = $imgUrl, publicUrl = $publicUrl',
+			{
+				id: website.id,
+				name: website.name,
+				publicUrl: website.publicUrl,
+				pageUrl: website.pageUrl,
+				imgUrl: website.imgUrl
+			}
+		);
+		console.log(response);
+		if (response[0].status == 'OK') {
+			return Website.createFromObject(response[0].result[0]);
+		} else {
+			throw new Error('Unable to update record');
+		}
 	}
 
 	async deleteWebsite(id: string): Promise<boolean> {
