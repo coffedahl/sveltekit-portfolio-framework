@@ -1,9 +1,17 @@
 import { redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
+import type { WebData } from '$lib/classes/websites';
 
 export const load: PageServerLoad = async ({ locals }) => {
 	// Return data
-	return { webList: locals.webData };
+	// Get list of websites
+	const weblist = await locals.db.getWebsiteList();
+	// Parse the website list
+	const webdata: Array<WebData> = [];
+	weblist.forEach((website) => {
+		webdata.push(website.getDataAsObject());
+	});
+	return { webdata };
 };
 
 export const actions: Actions = {

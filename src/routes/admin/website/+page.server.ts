@@ -1,10 +1,18 @@
+import type { WebData } from '$lib/classes/websites';
 import type { PageServerLoad, Actions } from './$types';
 
 export const load: PageServerLoad = async ({ locals }) => {
 	// Get the featured website
 	const featured = await locals.db.getFeaturedWebsite();
+	// Get list of websites
+	const weblist = await locals.db.getWebsiteList();
+	// Parse the website list
+	const webdata: Array<WebData> = [];
+	weblist.forEach((website) => {
+		webdata.push(website.getDataAsObject());
+	});
 	// Return data
-	return { webdata: locals.webData, featured: featured.getDataAsObject() };
+	return { webdata, featured: featured.getDataAsObject() };
 };
 
 export const actions: Actions = {
@@ -23,13 +31,12 @@ export const actions: Actions = {
 	/**
 	 * Function that handles deletion of a project
 	 */
-	delete: async ({ request, locals }) => {
+	remove: async ({ request, locals }) => {
 		// Get formdata
 		const formData = await request.formData();
 		const id = formData.get('id');
-		// Delete project
 		if (id) {
-			await locals.db.deleteWebsite(String(id));
+			const response = await locals.db.deleteWebsite(String(id));
 		}
 	}
 };
