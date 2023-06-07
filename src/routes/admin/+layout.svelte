@@ -1,7 +1,7 @@
 <div class="main flex flex-column justify-even items-center">
 	<h1>Admin</h1>
 	<slot />
-	<form method="post">
+	<form method="post" action="/admin">
 		<button class="btn logout-button">Logout</button>
 	</form>
 </div>
