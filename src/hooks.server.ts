@@ -1,9 +1,11 @@
 // Imports
+import { DATABASE_URL } from '$env/static/private'
 import { redirect, type Handle } from '@sveltejs/kit';
 import { Database } from './lib/db';
 import type { SessionData } from '$lib/types/types';
 // Create mock databse
-const db = new Database('http://localhost:8000/rpc');
+console.log('db url: ' + DATABASE_URL)
+const db = new Database(DATABASE_URL);
 db.initDb('root', 'root', 'test', 'test');
 // Code running every server request
 export const handle = (async ({ event, resolve }) => {
